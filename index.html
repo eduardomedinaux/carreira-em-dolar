@@ -238,7 +238,11 @@
   /* founder story */
   .story{background:var(--teal-900);color:#fff;}
   .story .wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:52px;align-items:center;}
-  .story-photo{aspect-ratio:4/5;border-radius:18px;}
+  .story-photo{
+    aspect-ratio:4/5;border-radius:18px;width:100%;height:auto;
+    object-fit:cover;
+    box-shadow:0 24px 60px rgba(0,0,0,.32);
+  }
   .story h2{color:#fff;}
   .story .eyebrow{color:var(--gold);}
   .story p{color:rgba(255,255,255,.78);}
@@ -562,11 +566,7 @@
 <!-- HISTÓRIA -->
 <section class="story">
   <div class="wrap">
-    <!-- TROCAR por <img src="eduardo.jpg" alt="Eduardo Medina" class="ph-img"> -->
-    <div class="ph ph-dark story-photo">
-      <b>Foto do Eduardo</b>
-      <span>Retrato vertical 4:5 · 1000×1250</span>
-    </div>
+    <img src="eduardo.jpg" alt="Eduardo Medina trabalhando em seu home office" class="story-photo" width="1000" height="1250" loading="lazy" decoding="async">
     <div>
       <span class="eyebrow">Quem te acompanha</span>
       <h2>Eduardo Medina</h2>
