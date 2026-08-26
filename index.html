@@ -7,30 +7,32 @@
 
 <!-- ══════════════════════════════════════════════════════════════
      SEO + OPEN GRAPH
-     TROCAR: a URL do site e a imagem /og-image.png (1200×630).
-     Sem isso o link na DM do ManyChat aparece sem título e sem imagem.
+     As 5 URLs abaixo apontam para o domínio da Vercel porque o domínio
+     próprio ainda não foi registrado. Quando registrar, troque as cinco
+     de uma vez: buscar por "carreira-em-dolar.vercel.app".
+     og:image PRECISA ser URL absoluta — relativa não gera preview.
      ══════════════════════════════════════════════════════════════ -->
 <meta name="description" content="Mentoria prática para profissionais brasileiros se posicionarem para vagas remotas internacionais pagas em dólar. Sem inglês perfeito, sem morar fora. Turma Fundadora: R$ 299.">
-<link rel="canonical" href="https://carreiraemdolar.com.br/">
+<link rel="canonical" href="https://carreira-em-dolar.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Carreira em Dólar">
 <meta property="og:title" content="Carreira em Dólar — Turma Fundadora">
 <meta property="og:description" content="Como o mercado internacional realmente procura, avalia e contrata. Método + software. Turma Fundadora por R$ 299.">
-<meta property="og:url" content="https://carreiraemdolar.com.br/">
-<meta property="og:image" content="https://carreiraemdolar.com.br/og-image.png">
+<meta property="og:url" content="https://carreira-em-dolar.vercel.app/">
+<meta property="og:image" content="https://carreira-em-dolar.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Carreira em Dólar — Turma Fundadora">
 <meta name="twitter:description" content="Como o mercado internacional realmente procura, avalia e contrata. Método + software.">
-<meta name="twitter:image" content="https://carreiraemdolar.com.br/og-image.png">
+<meta name="twitter:image" content="https://carreira-em-dolar.vercel.app/og-image.png">
 <meta name="theme-color" content="#0F4D4A">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --teal-900:#0B3634;
@@ -78,6 +80,8 @@
   .section-head h2{margin-top:12px;}
   .section-head p{margin-top:16px;}
   .center{text-align:center;}
+  /* nav é fixo: sem isso o link de âncora joga o título da seção embaixo dele */
+  [id]{scroll-margin-top:96px;}
 
   /* ══ PLACEHOLDER DE IMAGEM ══
      Todo bloco .ph é um lugar onde entra imagem.
@@ -118,15 +122,106 @@
   .fineprint{font-size:13px;color:var(--ink-faint);margin-top:14px;}
 
   /* header */
+  /* ══ NAV SOBREPOSTO AO HERO ══
+     Fica transparente sobre a foto e ganha fundo sólido ao rolar (classe .solid via JS). */
   header{
-    position:sticky;top:0;z-index:50;
-    background:rgba(250,249,246,.97);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:transparent;border-bottom:1px solid transparent;
+    transition:background .25s ease, border-color .25s ease, box-shadow .25s ease;
   }
-  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:var(--maxw);margin:0 auto;}
-  .logo{font-family:'Kaushan Script',cursive;font-size:24px;color:var(--teal-900);}
-  .logo span{color:var(--gold);}
+  header.solid{
+    background:var(--off-white);border-bottom-color:var(--line);
+    box-shadow:0 2px 20px rgba(11,54,52,.06);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 24px;max-width:var(--maxw);margin:0 auto;}
+  /* Logo é um selo fechado (caixa escura + lettering claro): tem contraste
+     próprio, então não precisa trocar de cor entre nav transparente e sólido. */
+  .logo{display:block;flex:none;}
+  .logo img{height:42px;width:auto;display:block;}
+  .nav-links{display:flex;gap:30px;}
+  .nav-links a{font-size:15px;font-weight:500;color:rgba(255,255,255,.86);text-decoration:none;transition:color .2s;}
+  .nav-links a:hover{color:#fff;}
+  header.solid .nav-links a{color:var(--ink-soft);}
+  header.solid .nav-links a:hover{color:var(--teal);}
   .nav-cta{font-size:14px;padding:11px 22px;}
+
+  /* ══ HERO EM TELA CHEIA ══ */
+  .hero{
+    position:relative;min-height:100svh;padding:120px 24px 64px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;overflow:hidden;isolation:isolate;
+  }
+  /* Gradiente de marca é o piso: se hero.jpg não existir, o hero continua inteiro.
+     Quando existir, a foto entra por cima do gradiente e abaixo do overlay. */
+  .hero-bg{
+    position:absolute;inset:0;z-index:-2;
+    background:
+      radial-gradient(120% 90% at 78% 8%, rgba(199,154,75,.30), transparent 58%),
+      linear-gradient(165deg, #14514D 0%, #0B3634 46%, #061F1E 100%);
+  }
+  .hero-bg::after{
+    content:"";position:absolute;inset:0;
+    background-image:url('hero.jpg');
+    background-size:cover;background-position:center;
+    opacity:1;
+  }
+  /* Overlay: garante contraste do texto independentemente da foto escolhida. */
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:-1;
+    background:
+      linear-gradient(180deg, rgba(6,31,30,.72) 0%, rgba(6,31,30,.44) 32%, rgba(6,31,30,.62) 72%, rgba(6,31,30,.88) 100%),
+      radial-gradient(75% 60% at 50% 48%, rgba(6,31,30,.30), transparent 72%);
+  }
+  .hero-inner{position:relative;max-width:940px;width:100%;}
+  .hero h1{
+    color:#fff;font-size:clamp(38px,6.2vw,82px);line-height:1.03;
+    letter-spacing:-.035em;font-weight:800;text-wrap:balance;
+    text-shadow:0 2px 30px rgba(0,0,0,.35);
+  }
+  .hero h1 .hl{color:var(--gold);box-shadow:inset 0 -.10em 0 rgba(199,154,75,.42);}
+  .hero .lede{
+    margin:26px auto 0;max-width:660px;color:rgba(255,255,255,.88);
+    font-size:clamp(16.5px,1.55vw,20px);line-height:1.55;
+    text-shadow:0 1px 16px rgba(0,0,0,.4);
+  }
+  .hero-actions{
+    margin-top:38px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  }
+  .btn-gold{background:var(--gold);color:#26210F;font-weight:700;}
+  .btn-gold:hover{background:#D6AC5F;transform:translateY(-1px);}
+  .btn-gold svg{width:18px;height:18px;}
+  .btn-glass{
+    background:rgba(255,255,255,.10);color:#fff;border-color:rgba(255,255,255,.34);
+    backdrop-filter:blur(6px);
+  }
+  .btn-glass:hover{background:rgba(255,255,255,.18);}
+  .hero-trust{
+    margin-top:36px;display:flex;gap:34px;justify-content:center;flex-wrap:wrap;
+  }
+  .ht{
+    display:flex;align-items:center;gap:11px;
+    font-size:13px;font-weight:500;color:rgba(255,255,255,.85);
+  }
+  .ht-ico{
+    width:34px;height:34px;flex:none;border-radius:50%;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+    display:flex;align-items:center;justify-content:center;color:var(--gold);
+  }
+  .ht-ico svg{width:16px;height:16px;}
+  .hero-flag{
+    margin-top:40px;font-size:12.5px;font-weight:700;color:var(--gold);
+    letter-spacing:.22em;text-transform:uppercase;line-height:1.7;
+  }
+  .hero-scroll{
+    position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+    width:24px;height:38px;border:1.5px solid rgba(255,255,255,.42);border-radius:14px;
+    display:flex;justify-content:center;padding-top:7px;
+  }
+  .hero-scroll span{
+    width:3px;height:7px;border-radius:2px;background:rgba(255,255,255,.72);
+    animation:sc 1.8s ease-in-out infinite;
+  }
+  @keyframes sc{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(9px);opacity:.25}}
 
   /* ══ BARRA FIXA MOBILE ══
      O tráfego vem de DM do Instagram = quase tudo mobile.
@@ -162,44 +257,15 @@
   .status-band p{font-size:14px;color:var(--teal-900);font-weight:500;}
   .status-band b{font-weight:700;}
 
-  /* hero */
-  .hero{padding:64px 0 56px;}
-  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:start;}
-  .hero-copy h1{margin-top:16px;font-size:clamp(40px,5.8vw,72px);}
-  .hero-copy .lede{margin-top:20px;}
-  .hero-actions{margin-top:32px;}
-  .trust-row{display:flex;flex-wrap:wrap;gap:20px;margin-top:28px;}
-  .trust-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);font-weight:500;}
-  .trust-item svg{width:16px;height:16px;flex:none;color:var(--teal);}
-
-  .hero-card{
-    background:var(--teal-900);
-    border-radius:20px;
-    padding:36px;
-    color:#fff;
-    position:relative;
-    overflow:hidden;
-  }
-  .hero-card::before{
-    content:"";position:absolute;inset:0;
-    background:radial-gradient(circle at 85% 0%, rgba(199,154,75,.25), transparent 55%);
-  }
-  .hero-card-inner{position:relative;}
-  .journey-step{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.12);}
-  .journey-step:last-child{border-bottom:none;}
-  .journey-num{
-    flex:none;width:26px;height:26px;border-radius:50%;
-    background:rgba(255,255,255,.12);color:#fff;font-size:12px;font-weight:700;
-    display:flex;align-items:center;justify-content:center;margin-top:2px;
-  }
-  .journey-step.active .journey-num{background:var(--gold);color:var(--teal-900);}
-  .journey-text b{display:block;font-size:14.5px;font-weight:600;color:#fff;}
-  .journey-text span{font-size:13px;color:rgba(255,255,255,.62);}
-
   /* prova visual */
   .proof{background:var(--paper);padding:64px 0;}
   .proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:8px;}
   .proof-item .ph{aspect-ratio:16/10;}
+  .shot{
+    width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top left;
+    border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:0 18px 40px rgba(11,54,52,.12);background:var(--paper);
+  }
   .proof-cap{font-size:13px;color:var(--ink-faint);margin-top:10px;text-align:center;}
 
   /* belief cards */
@@ -371,11 +437,11 @@
 
   footer{padding:40px 0;border-top:1px solid var(--line);}
   footer .wrap{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;}
-  footer .logo{font-size:19px;}
+  footer .logo img{height:48px;}
   footer p{font-size:12.5px;color:var(--ink-faint);}
 
   @media (max-width:860px){
-    .hero-grid,.story .wrap,.gj-banner,.forwhom-grid,.proof-grid{grid-template-columns:1fr;}
+    .story .wrap,.gj-banner,.forwhom-grid,.proof-grid{grid-template-columns:1fr;}
     .belief-grid{grid-template-columns:1fr 1fr;}
     .method-line{gap:28px 0;}
     .method-step{flex:1 1 45%;}
@@ -383,6 +449,14 @@
     section{padding:64px 0;}
     .mobile-bar{display:flex;}
     body{padding-bottom:82px;}
+    .nav-links{display:none;}
+    .hero{padding:104px 20px 88px;min-height:100svh;}
+    /* retrato corta a foto na horizontal: puxa o enquadramento para a faixa
+       do pôr do sol, que é a parte escura e bonita atrás do texto */
+    .hero-bg::after{background-position:34% center;}
+    .hero-trust{gap:18px;flex-direction:column;align-items:center;}
+    .hero-actions .btn{width:100%;}
+    .hero-flag{letter-spacing:.16em;font-size:11.5px;}
     .nav-cta{display:none;}
   }
   @media (max-width:560px){
@@ -399,71 +473,56 @@
 </head>
 <body>
 
-<header>
+<header id="topo">
   <div class="nav">
-    <div class="logo">Carreira em <span>Dólar</span></div>
-    <a href="#oferta" class="btn btn-primary nav-cta">Turma Fundadora</a>
+    <a href="#topo" class="logo" aria-label="Carreira em Dólar — início"><img src="Logo.svg" alt="Carreira em Dólar" width="126" height="62"></a>
+    <nav class="nav-links">
+      <a href="#metodo">Método</a>
+      <a href="#programa">Programa</a>
+      <a href="#globejobbers">GlobeJobbers</a>
+    </nav>
+    <a href="#oferta" class="btn btn-gold nav-cta">Turma Fundadora</a>
   </div>
 </header>
 
+<!-- ══ HERO EM TELA CHEIA ══
+     A imagem de fundo é hero.jpg (16:9, mínimo 2400px de largura).
+     Enquanto ela não existir, o gradiente abaixo segura o hero sozinho —
+     a página nunca fica quebrada. Para trocar, é só colocar hero.jpg na pasta. -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <h1>Sua profissão <span class="hl">já vale em dólar</span>.</h1>
+    <p class="lede">Sem inglês perfeito, sem morar fora, sem conhecer alguém lá dentro.
+      A mentoria prática que ensina como o mercado internacional realmente procura,
+      avalia e contrata — e o software que executa cada etapa com você.</p>
+
+    <div class="hero-actions">
+      <a href="https://pay.hotmart.com/S107139744L" class="btn btn-gold">
+        Entrar na Turma Fundadora
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#metodo" class="btn btn-glass">Como funciona</a>
+    </div>
+
+    <div class="hero-trust">
+      <div class="ht"><span class="ht-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="M9 12l2 2 4-4"/></svg></span>Garantia incondicional de 7 dias</div>
+      <div class="ht"><span class="ht-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v9H4v-9"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/></svg></span>30 dias de GlobeJobbers Pro inclusos</div>
+    </div>
+
+    <p class="hero-flag">Turma Fundadora &middot; o menor valor que esta mentoria vai ter</p>
+  </div>
+
+  <a href="#status" class="hero-scroll" aria-label="Rolar para baixo"><span></span></a>
+</section>
+
 <!-- ══ FAIXA DE STATUS ══
-     Esta faixa é o que torna honesto vender antes de tudo estar gravado.
      ATUALIZAR o número toda vez que publicar aulas novas. -->
-<div class="status-band">
+<div class="status-band" id="status">
   <div class="wrap">
-    <p><span class="status-dot"></span><b>Turma Fundadora em construção aberta:</b> 8 das 59 aulas já estão no ar. Aulas novas toda semana — e você acompanha tudo desde o começo.</p>
+    <p><span class="status-dot"></span><b>Turma Fundadora em construção aberta:</b> 12 das 59 aulas no ar — o posicionamento completo. Aulas novas toda semana.</p>
   </div>
 </div>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <span class="eyebrow">Turma Fundadora · Mentoria + GlobeJobbers</span>
-      <h1>Sua profissão já vale em dólar.</h1>
-      <p class="lede">Sem inglês perfeito, sem morar fora, sem conhecer alguém lá dentro. A mentoria prática que ensina como o mercado internacional realmente procura, avalia e contrata — e o software que executa cada etapa com você.</p>
-      <div class="hero-actions">
-        <a href="https://pay.hotmart.com/S107139744L" class="btn btn-primary">Entrar na Turma Fundadora — R$ 299</a>
-        <div class="fineprint">Pagamento único · Em até 3x sem juros · Garantia incondicional de 7 dias</div>
-      </div>
-      <div class="trust-row">
-        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>Garantia de 7 dias</div>
-        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>Menor preço que a mentoria vai ter</div>
-        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>Acesso às aulas futuras desta turma</div>
-      </div>
-    </div>
-
-    <div class="hero-card">
-      <div class="hero-card-inner">
-        <div class="eyebrow" style="color:var(--gold);margin-bottom:16px;">O método</div>
-        <div class="journey-step active">
-          <div class="journey-num">1</div>
-          <div class="journey-text"><b>Diagnostique seu perfil</b><span>Sobe o PDF do LinkedIn e vê onde você está hoje</span></div>
-        </div>
-        <div class="journey-step">
-          <div class="journey-num">2</div>
-          <div class="journey-text"><b>Colete 5 vagas que você quer</b><span>Vagas reais, não um cargo imaginado</span></div>
-        </div>
-        <div class="journey-step">
-          <div class="journey-num">3</div>
-          <div class="journey-text"><b>Leia o mercado</b><span>100+ vagas reais: cargos, skills, senioridade</span></div>
-        </div>
-        <div class="journey-step">
-          <div class="journey-num">4</div>
-          <div class="journey-text"><b>Defina o cargo-alvo</b><span>Com evidência das vagas, não por chute</span></div>
-        </div>
-        <div class="journey-step">
-          <div class="journey-num">5</div>
-          <div class="journey-text"><b>Reescreva LinkedIn e currículo</b><span>Headline, About, experiências e CV adaptado por vaga</span></div>
-        </div>
-        <div class="journey-step">
-          <div class="journey-num">6</div>
-          <div class="journey-text"><b>Entreviste e negocie</b><span>Cases prontos, respostas treinadas, proposta avaliada</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- A PERGUNTA -->
 <section>
@@ -484,19 +543,15 @@
       <h2>Você vai ver o mercado, não a opinião de alguém sobre ele</h2>
     </div>
     <div class="proof-grid">
+      <!-- PROVISÓRIO: esquema do relatório. Trocar por print real do Market
+           Intelligence assim que a cota da JSearch permitir rodar um relatório. -->
       <div class="proof-item">
-        <div class="ph">
-          <b>Print: Market Intelligence</b>
-          <span>Relatório de vagas reais · 1600×1000</span>
-        </div>
-        <p class="proof-cap">O relatório mostra como o mercado chama o seu cargo, com base em centenas de vagas reais.</p>
+        <img src="gj-market-intelligence.png" alt="Esquema do relatório de Market Intelligence do GlobeJobbers com seus seis blocos" class="shot" width="1600" height="1000" loading="lazy" decoding="async">
+        <p class="proof-cap">A estrutura do relatório: seis blocos montados a partir das vagas reais do mercado que você escolher.</p>
       </div>
       <div class="proof-item">
-        <div class="ph">
-          <b>Print: LinkedIn Review</b>
-          <span>Diagnóstico por categoria · 1600×1000</span>
-        </div>
-        <p class="proof-cap">Seu perfil avaliado contra o mercado que você escolheu — categoria por categoria.</p>
+        <img src="gj-linkedin-review.png" alt="Tela do LinkedIn Review do GlobeJobbers mostrando o Score Internacional e o diagnóstico da headline" class="shot" width="1600" height="1000" loading="lazy" decoding="async">
+        <p class="proof-cap">Seu perfil avaliado contra o mercado que você escolheu — categoria por categoria, com recomendação e exemplo.</p>
       </div>
     </div>
   </div>
@@ -545,7 +600,7 @@
 </section>
 
 <!-- MÉTODO -->
-<section>
+<section id="metodo">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Como funciona</span>
@@ -578,7 +633,7 @@
 </section>
 
 <!-- CURRICULO -->
-<section class="curriculum">
+<section class="curriculum" id="programa">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">O programa completo</span>
@@ -597,10 +652,10 @@
       <div class="mod-row">
         <div class="mod-idx">01</div>
         <div>
-          <div class="mod-title">Posicionamento <span class="chip chip-partial">Em publicação</span></div>
+          <div class="mod-title">Posicionamento <span class="chip chip-live">No ar</span></div>
           <div class="mod-desc">Quem você é, o que quer, o que o mercado procura — e a definição do seu cargo-alvo.</div>
         </div>
-        <div class="mod-count">3 de 7 aulas</div>
+        <div class="mod-count">7 de 7 aulas</div>
       </div>
       <div class="mod-row">
         <div class="mod-idx">02</div>
@@ -668,13 +723,13 @@
       </div>
     </div>
     <div class="curriculum-total">
-      <b>Sendo transparente:</b> hoje estão publicadas <b>8 aulas</b> — o Módulo 0 inteiro e o começo do Módulo 1, que é justamente onde você começa a executar. O restante é publicado semanalmente até o programa completo. É por isso que a Turma Fundadora custa R$ 299 e as próximas vão custar mais: você entra mais barato e acompanha a construção de perto. Se preferir esperar tudo pronto, não tem problema nenhum — só vai pagar mais caro.
+      <b>Sendo transparente:</b> hoje estão publicadas <b>12 aulas</b> — os Módulos 0 e 1 inteiros. Isso significa que a etapa de posicionamento está completa: você já consegue, hoje, sair do zero e chegar ao seu cargo-alvo definido com evidência. O restante é publicado semanalmente até o programa completo. É por isso que a Turma Fundadora custa R$ 299 e as próximas vão custar mais: você entra mais barato e acompanha a construção de perto. Se preferir esperar tudo pronto, não tem problema nenhum — só vai pagar mais caro.
     </div>
   </div>
 </section>
 
 <!-- GLOBEJOBBERS -->
-<section class="gj">
+<section class="gj" id="globejobbers">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Mentoria + Software</span>
@@ -746,7 +801,7 @@
         <div class="installments">ou em até 3x de R$ 99,67 sem juros</div>
       </div>
       <ul class="offer-includes">
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span><b>8 aulas disponíveis hoje</b> — Módulo 0 completo e o início do Módulo 1</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span><b>12 aulas disponíveis hoje</b> — Módulos 0 e 1 completos, o posicionamento inteiro</span></li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span>As <b>59 aulas</b> do programa completo, publicadas semanalmente</span></li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span>Encontros ao vivo para dúvidas e casos reais</span></li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span>30 dias de GlobeJobbers Pro incluídos (6 ferramentas, já no ar)</span></li>
@@ -782,11 +837,11 @@
     <div class="faq" id="faq">
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">Quantas aulas estão disponíveis agora?<span class="plus" aria-hidden="true"></span></button>
-        <div class="faq-a"><p>Hoje são 8 aulas publicadas: o Módulo 0 inteiro (5 aulas) e as três primeiras do Módulo 1, que é onde você monta seu ponto de partida e começa a executar. O programa completo tem 59 aulas em 10 módulos, publicadas semanalmente. É exatamente por isso que a Turma Fundadora custa R$ 299 — nas próximas turmas, com tudo pronto, o preço sobe.</p></div>
+        <div class="faq-a"><p>Hoje são 12 aulas publicadas: os Módulos 0 e 1 completos. O Módulo 1 é o de posicionamento — do seu ponto de partida até a definição do cargo-alvo com evidência das vagas. Ou seja, a primeira etapa da mentoria você já executa inteira. O programa completo tem 59 aulas em 10 módulos, publicadas semanalmente. É exatamente por isso que a Turma Fundadora custa R$ 299 — nas próximas turmas, com tudo pronto, o preço sobe.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">Por que eu entraria antes de tudo estar pronto?<span class="plus" aria-hidden="true"></span></button>
-        <div class="faq-a"><p>Por três motivos concretos: você paga o menor preço que a mentoria terá; o GlobeJobbers, que é a parte de execução, já está 100% no ar com 6 ferramentas; e as aulas já publicadas são as de posicionamento — a primeira coisa que você precisa fazer de qualquer forma. Se você prefere esperar o programa completo, é uma escolha legítima: só vai custar mais caro.</p></div>
+        <div class="faq-a"><p>Por três motivos concretos: você paga o menor preço que a mentoria terá; o GlobeJobbers, que é a parte de execução, já está 100% no ar com 6 ferramentas; e o posicionamento inteiro já está publicado — que é a primeira coisa que você precisa fazer de qualquer forma, e a que trava a maioria das pessoas. Se você prefere esperar o programa completo, é uma escolha legítima: só vai custar mais caro.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">Preciso ter inglês fluente para começar?<span class="plus" aria-hidden="true"></span></button>
@@ -835,7 +890,7 @@
 
 <footer>
   <div class="wrap">
-    <div class="logo">Carreira em <span style="color:var(--gold);">Dólar</span></div>
+    <div class="logo"><img src="Logo.svg" alt="Carreira em Dólar" width="126" height="62"></div>
     <p>Produto vendido e processado pela Hotmart. Garantia de 7 dias conforme o Código de Defesa do Consumidor.</p>
   </div>
 </footer>
@@ -850,6 +905,14 @@
 </div>
 
 <script>
+  // nav ganha fundo sólido depois que o hero sai da tela
+  (function(){
+    var h=document.querySelector('header'), hero=document.querySelector('.hero');
+    if(!h||!hero) return;
+    var io=new IntersectionObserver(function(e){h.classList.toggle('solid',!e[0].isIntersecting);},{rootMargin:'-72px 0px 0px 0px'});
+    io.observe(hero);
+  })();
+
   document.querySelectorAll('.faq-item').forEach(function(item){
     var q = item.querySelector('.faq-q');
     var a = item.querySelector('.faq-a');
