@@ -80,7 +80,7 @@
   .section-head p{margin-top:16px;}
   .center{text-align:center;}
   /* nav é fixo: sem isso o link de âncora joga o título da seção embaixo dele */
-  [id]{scroll-margin-top:96px;}
+  [id]{scroll-margin-top:132px;}
 
   /* ══ PLACEHOLDER DE IMAGEM ══
      Todo bloco .ph é um lugar onde entra imagem.
@@ -136,7 +136,7 @@
   /* Logo é um selo fechado (caixa escura + lettering claro): tem contraste
      próprio, então não precisa trocar de cor entre nav transparente e sólido. */
   .logo{display:block;flex:none;}
-  .logo img{height:42px;width:auto;display:block;}
+  .logo img{height:80px;width:auto;display:block;}
   .nav-links{display:flex;gap:30px;}
   .nav-links a{font-size:15px;font-weight:500;color:rgba(255,255,255,.86);text-decoration:none;transition:color .2s;}
   .nav-links a:hover{color:#fff;}
@@ -146,7 +146,7 @@
 
   /* ══ HERO EM TELA CHEIA ══ */
   .hero{
-    position:relative;min-height:100svh;padding:120px 24px 64px;
+    position:relative;min-height:100svh;padding:152px 24px 64px;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;overflow:hidden;isolation:isolate;
   }
@@ -449,7 +449,8 @@
     .mobile-bar{display:flex;}
     body{padding-bottom:82px;}
     .nav-links{display:none;}
-    .hero{padding:104px 20px 88px;min-height:100svh;}
+    .logo img{height:56px;}
+    .hero{padding:112px 20px 88px;min-height:100svh;}
     /* retrato corta a foto na horizontal: puxa o enquadramento para a faixa
        do pôr do sol, que é a parte escura e bonita atrás do texto */
     .hero-bg::after{background-position:34% center;}
